@@ -117,7 +117,7 @@ endif
 if !exists("g:cinnamon_extra_defaults")
     let g:cinnamon_extras = 0
 endif
-if g:cinnamon_extras != 1
+if g:cinnamon_extras == 1
     " start and end of file movements
     nnoremap <silent> gg <Cmd>Scroll gg 0 0 1 <CR>
     nnoremap <silent> G <Cmd>Scroll G 0 0 1 <CR>

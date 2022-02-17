@@ -1,4 +1,5 @@
 # cinnamon-scrolls
+# cinnamon-scroll
 
 A scrolling plugin for vim that works with any movement command.
 

@@ -1,4 +1,3 @@
-# cinnamon-scrolls
 # cinnamon-scroll
 
 A scrolling plugin for vim that works with any movement command.
@@ -13,13 +12,13 @@ Install with your favorite package manager.
 ### Vim-Plug
 
 ```vim
-Plug "declancm/cinnamon-scrolls"
+Plug "declancm/cinnamon-scroll"
 ```
 
 ## The Command
 
 ```vim
-<Cmd>Scroll arg1 arg2 arg3 arg4 arg5 <CR>
+<Cmd>Cinnamon arg1 arg2 arg3 arg4 arg5 <CR>
 ```
 
 * arg1 = The movement command (eg. 'gg'). This argument is required as there's\
@@ -36,28 +35,26 @@ Keymaps for examples on how to use it.
 
 ```vim
 " Paragraph movements
-nnoremap <silent> { <Cmd>Scroll { 0 <CR>
-nnoremap <silent> } <Cmd>Scroll } 0 <CR>
-xnoremap <silent> { k<Cmd>Scroll {j 0 <CR>
-xnoremap <silent> } j<Cmd>Scroll }k 0 <CR>
-" In visual mode, the paragraph stops at the first/last line of the paragraph
-" instead of the whitespace for better highlighting.
+nnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
+nnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
+xnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
+xnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
 
 " Half-window movements
-nnoremap <silent> <C-u> <Cmd>Scroll <C-u> <CR>
-nnoremap <silent> <C-d> <Cmd>Scroll <C-d> <CR>
-inoremap <silent> <C-u> <Cmd>Scroll <C-u> <CR>
-inoremap <silent> <C-d> <Cmd>Scroll <C-d> <CR>
+nnoremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
+nnoremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
+inoremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
+inoremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
 
 " Page movements
-nnoremap <silent> <C-b> <Cmd>Scroll <C-b> <CR>
-nnoremap <silent> <C-f> <Cmd>Scroll <C-f> <CR>
-inoremap <silent> <C-b> <Cmd>Scroll <C-b> <CR>
-inoremap <silent> <C-f> <Cmd>Scroll <C-f> <CR>
-nnoremap <silent> <PageUp> <Cmd>Scroll <C-b> <CR>
-nnoremap <silent> <PageDown> <Cmd>Scroll <C-f> <CR>
-inoremap <silent> <PageUp> <Cmd>Scroll <C-b> <CR>
-inoremap <silent> <PageDown> <Cmd>Scroll <C-f> <CR>
+nnoremap <silent> <C-b> <Cmd>Cinnamon <C-b> <CR>
+nnoremap <silent> <C-f> <Cmd>Cinnamon <C-f> <CR>
+inoremap <silent> <C-b> <Cmd>Cinnamon <C-b> <CR>
+inoremap <silent> <C-f> <Cmd>Cinnamon <C-f> <CR>
+nnoremap <silent> <PageUp> <Cmd>Cinnamon <C-b> <CR>
+nnoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> <CR>
+inoremap <silent> <PageUp> <Cmd>Cinnamon <C-b> <CR>
+inoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> <CR>
 ```
 
 To **disable** the default keymaps, add the following to your .vimrc:
@@ -70,20 +67,20 @@ let g:cinnamon_no_defaults = 1
 
 ```vim
 " Start and end of file movements
-nnoremap <silent> gg <Cmd>Scroll gg 0 0 1 <CR>
-nnoremap <silent> G <Cmd>Scroll G 0 0 1 <CR>
-xnoremap <silent> gg <Cmd>Scroll gg 0 0 1 <CR>
-xnoremap <silent> G <Cmd>Scroll G 0 0 1 <CR>
+nnoremap <silent> gg <Cmd>Cinnamon gg 0 0 1 <CR>
+nnoremap <silent> G <Cmd>Cinnamon G 0 0 1 <CR>
+xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 1 <CR>
+xnoremap <silent> G <Cmd>Cinnamon G 0 0 1 <CR>
 
 " Up and down movements which accepts a count (eg. 69j to scroll down 69 lines)
-nnoremap <silent> k <Cmd>Scroll k 0 1 2 0 <CR>
-nnoremap <silent> j <Cmd>Scroll j 0 1 2 0 <CR>
-nnoremap <silent> <Up> <Cmd>Scroll k 0 1 2 0 <CR>
-nnoremap <silent> <Down> <Cmd>Scroll j 0 1 2 0 <CR>
-xnoremap <silent> k <Cmd>Scroll k 0 1 2 0 <CR>
-xnoremap <silent> j <Cmd>Scroll j 0 1 2 0 <CR>
-xnoremap <silent> <Up> <Cmd>Scroll k 0 1 2 0 <CR>
-xnoremap <silent> <Down> <Cmd>Scroll j 0 1 2 0 <CR>
+nnoremap <silent> k <Cmd>Cinnamon k 0 1 2 0 <CR>
+nnoremap <silent> j <Cmd>Cinnamon j 0 1 2 0 <CR>
+nnoremap <silent> <Up> <Cmd>Cinnamon k 0 1 2 0 <CR>
+nnoremap <silent> <Down> <Cmd>Cinnamon j 0 1 2 0 <CR>
+xnoremap <silent> k <Cmd>Cinnamon k 0 1 2 0 <CR>
+xnoremap <silent> j <Cmd>Cinnamon j 0 1 2 0 <CR>
+xnoremap <silent> <Up> <Cmd>Cinnamon k 0 1 2 0 <CR>
+xnoremap <silent> <Down> <Cmd>Cinnamon j 0 1 2 0 <CR>
 ```
 
 To **enable** the extra keymaps, add the following to your .vimrc:

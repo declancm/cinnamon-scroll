@@ -84,12 +84,13 @@ function! s:MovementDistancePlugin(movement, useCount)
     let l:winview = winsaveview()
     let l:pos = getcurpos()[1]
     if a:useCount == 1
-        silent execute("normal " . v:count1 . a:movement)
+        silent execute(v:count1 . a:movement)
     else
-        silent execute("normal " . a:movement)
+        silent execute(a:movement)
     endif
     echom a:movement
     let l:newPos = getcurpos()[1]
+    echom l:newPos
     let l:distance = l:newPos - l:pos
     echom l:distance
     call winrestview(l:winview)

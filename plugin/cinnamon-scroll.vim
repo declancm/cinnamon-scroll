@@ -84,7 +84,7 @@ endfunction
 " arg5 = Slowdown at the end of the movement (1 for on, 0 for off). Default is 1.
 
 command! -nargs=+ Cinnamon call <SID>Scroll(<f-args>)
-command! -nargs=1 ScrollPlugin call <SID>ScrollPlugin(<f-args>)
+" command! -nargs=1 ScrollPlugin call <SID>ScrollPlugin(<f-args>)
 
 " KEYMAPS:
 

@@ -28,9 +28,6 @@ Plug "declancm/cinnamon-scroll"
 * arg4 = Length of delay between lines (in ms). Default is 5.
 * arg5 = Slowdown at the end of the movement (1 for on, 0 for off). Default is 1.
 
-Custom keymaps can be created using the 'Scroll' command. Look at the Default\
-Keymaps for examples on how to use it.
-
 ## Default Keymaps
 
 ```vim
@@ -88,3 +85,19 @@ To **enable** the extra keymaps, add the following to your .vimrc:
 ```vim
 let g:cinnamon_extras = 1
 ```
+
+## Creating Custom Keymaps
+
+Custom keymaps can be created using the 'Cinnamon' command.
+
+```vim
+" Disable default keymaps
+let g:cinnamon_no_defaults = 1
+" Jump to first/last line of paragraph intead of the whitespace
+xnoremap <silent> { k<Cmd>Cinnamon {j 0 <CR>
+xnoremap <silent> } j<Cmd>Cinnamon }k 0 <CR>
+```
+
+The first argument for the '{' keymap will perform a movement of '{j' which will\
+jump to the first whitespace line and then move one line down. The next argument\
+disables the window scrolling as the default is on.

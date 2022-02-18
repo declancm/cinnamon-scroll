@@ -83,12 +83,15 @@ endfunction
 function! s:MovementDistancePlugin(movement, useCount)
     let l:winview = winsaveview()
     let l:pos = getcurpos()[1]
+    let l:status = 0
     if a:useCount == 1
         silent execute(v:count1 . a:movement)
     else
-        silent execute(a:movement)
+        silent execute(a:movement . " | let l:status = 1")
     endif
     echom a:movement
+    while l:status != 1
+    endwhile
     let l:newPos = getcurpos()[1]
     echom l:newPos
     let l:distance = l:newPos - l:pos

@@ -88,7 +88,7 @@ function! s:MovementDistancePlugin(movement, useCount)
     else
         silent execute("normal " . a:movement)
     endif
-    echom "The movement is: " . a:movement
+    echom a:movement
     let l:newPos = getcurpos()[1]
     let l:distance = l:newPos - l:pos
     call winrestview(l:winview)

@@ -36,7 +36,7 @@ endfunction
 
 function! s:ScrollPlugin(movement, scrollWin = '1', useCount = '0', delay = '5', slowdown = '1') abort
     let l:pos = getcurpos()[1]
-    let l:distance = <SID>MovementDistance(a:movement, a:useCount)
+    let l:distance = <SID>MovementDistancePlugin(a:movement, a:useCount)
     if l:distance == 0 | return | endif
     let l:counter = 1
     if distance > 0

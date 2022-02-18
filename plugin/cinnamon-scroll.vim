@@ -87,11 +87,12 @@ function! s:MovementDistancePlugin(movement, useCount)
     if a:useCount == 1
         silent execute(v:count1 . a:movement)
     else
-        silent execute(a:movement . " | let l:status = 1")
+        " silent execute a:movement | let l:status = 1
+        normal a:movement
     endif
-    echom a:movement
-    while l:status != 1
-    endwhile
+    " echom a:movement
+    " while l:status != 1
+    " endwhile
     let l:newPos = getcurpos()[1]
     echom l:newPos
     let l:distance = l:newPos - l:pos

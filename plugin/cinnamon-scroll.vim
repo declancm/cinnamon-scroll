@@ -91,6 +91,7 @@ function! s:MovementDistancePlugin(movement, useCount)
     echom a:movement
     let l:newPos = getcurpos()[1]
     let l:distance = l:newPos - l:pos
+    echom l:distance
     call winrestview(l:winview)
     return l:distance
 endfunction

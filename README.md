@@ -73,6 +73,10 @@ nnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
 xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 
+" previous/next cursor position
+nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 0 0 3 <CR>
+nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 0 0 3 <CR>
+
 " Up and down movements which accepts a count (eg. 69j to scroll down 69 lines)
 nnoremap <silent> k <Cmd>Cinnamon k 0 1 2 0 <CR>
 nnoremap <silent> j <Cmd>Cinnamon j 0 1 2 0 <CR>

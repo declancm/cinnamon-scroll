@@ -5,7 +5,7 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
     if a:movement == 'j' && v:count1 == 1
         silent execute("normal! j")
         return
-    if a:movement == 'k' && v:count1 == 1
+    elseif a:movement == 'k' && v:count1 == 1
         silent execute("normal! k")
         return
     endif

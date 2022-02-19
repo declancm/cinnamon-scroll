@@ -50,9 +50,9 @@ function! s:CheckFold(counter)
     " If a fold exists, add the length to the counter.
     if l:foldStart != -1
         let l:foldSize = foldclosedend(l:foldStart) - l:foldStart
-        echom l:foldSize
         let l:counter += l:foldSize
     endif
+    echom l:counter
     return l:counter
 endfunction
 

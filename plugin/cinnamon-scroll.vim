@@ -92,7 +92,7 @@ function! s:MovementDistance(movement, useCount)
         let l:distance = 0
         return
     endif
-    if l:column == l:newColumn || l:newColumn == strdisplaywidth(getline(".")) - 1
+    if l:column == l:newColumn || l:newColumn == strdisplaywidth(getline("."))
         let l:newColumn = -1
     endif
     let l:distance = l:newPos - l:pos

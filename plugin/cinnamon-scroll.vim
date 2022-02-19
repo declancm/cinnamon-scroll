@@ -16,41 +16,43 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
     if distance > 0
         " scrolling downwards
         while l:counter <= l:distance
+            let l:counter = <SID>CheckFold(l:counter)
             silent execute("normal! j")
             if a:scrollWin == 1
                 if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%') - &scrolloff)
                     silent execute("normal! \<C-E>")
                 endif
             endif
+            let l:counter += 1
             let l:remaining = l:distance - l:counter
             call <SID>SleepDelay(l:remaining, a:delay, a:slowdown)
-            let l:counter = <SID>CheckFoldCounter(l:counter)
         endwhile
     else
         " scrolling upwards
         while l:counter <= -l:distance
+            let l:counter = <SID>CheckFold(l:counter)
             silent execute("normal! k")
             if a:scrollWin == 1
                 if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%') - &scrolloff)
                     silent execute("normal! \<C-Y>")
                 endif
             endif
+            let l:counter += 1
             let l:remaining = - (l:distance + l:counter)
             call <SID>SleepDelay(l:remaining, a:delay, a:slowdown)
-            let l:counter = <SID>CheckFoldCounter(l:counter)
         endwhile
     endif
 endfunction
 
-function! s:CheckFoldCounter(counter)
+function! s:CheckFold(counter)
     let l:counter = a:counter
     let l:foldStart = foldclosed(".")
+    " If a fold exists, add the length to the counter.
     if l:foldStart != -1
         let l:foldSize = foldclosedend(l:foldStart) - l:foldStart
         echom l:foldSize
         let l:counter += l:foldSize
     endif
-    let l:counter += 1
     return l:counter
 endfunction
 
@@ -70,8 +72,14 @@ endfunction
 
 function! s:SleepDelay(remaining, delay, slowdown)
     if a:slowdown == 1
-        if a:remaining <= 4
-            silent execute("sleep " . (a:delay * (5 - a:remaining)) . "m")
+        " Don't create a delay when the distance has been achieved.
+        if a:remaining <= 0
+            redraw
+            return
+        endif
+        " Increase the delay near the end of the scroll.
+        if a:remaining <= 5
+            silent execute("sleep " . (a:delay * (6 - a:remaining)) . "m")
         else
             silent execute("sleep " . a:delay . "m")
         endif
@@ -83,13 +91,15 @@ endfunction
 
 " COMMAND:
 
-" <Cmd>Cinnamon arg1 arg2 arg3 arg4 arg5 <CR>
+" <Cmd>Cinnamon arg1 arg2 arg3 arg4 arg5 arg6 <CR>
 
 " arg1 = Movement command (eg. 'gg'). This argument is required as there's no default value.
 " arg2 = Scroll the window (1 for on, 0 for off). Default is 1.
 " arg3 = Accept a count before the command (1 for on, 0 for off). Default is 0.
 " arg4 = Length of delay (in ms). Default is 5.
 " arg5 = Slowdown at the end of the movement (1 for on, 0 for off). Default is 1.
+" arg6 = Max number of lines before scrolling is skipped. Mainly just for big
+"        commands such as 'gg' and 'G'. Default is 300.
 
 command! -nargs=+ Cinnamon call <SID>Scroll(<f-args>)
 

@@ -1,10 +1,10 @@
 " FUNCTIONS:
 
-function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowdown = '1') abort
+function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowdown = '1', maxLines = '300') abort
     let l:pos = getcurpos()[1]
     let l:distance = <SID>MovementDistance(a:movement, a:useCount)
     if l:distance == 0 | return | endif
-    if l:distance >= 1000
+    if l:distance > a:maxLines || l:distance < -a:maxLines
         if a:useCount == 1
             silent execute("normal! " . v:count1 . a:movement)
         else

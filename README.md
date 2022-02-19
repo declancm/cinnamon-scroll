@@ -18,15 +18,19 @@ Plug "declancm/cinnamon-scroll"
 ## The Command
 
 ```vim
-<Cmd>Cinnamon arg1 arg2 arg3 arg4 arg5 <CR>
+<Cmd>Cinnamon arg1 arg2 arg3 arg4 arg5 arg6 <CR>
 ```
 
-* arg1 = The movement command (eg. 'gg'). This argument is required as there's\
+_Note: A whitespace is used to separate the arguments._
+
+* arg1 - The movement command (eg. 'gg'). This argument is required as there's\
   no default value.
-* arg2 = Scroll the window (1 for on, 0 for off). Default is 1.
-* arg3 = Accept a count before the command (1 for on, 0 for off). Default is 0.
-* arg4 = Length of delay between lines (in ms). Default is 5.
-* arg5 = Slowdown at the end of the movement (1 for on, 0 for off). Default is 1.
+* arg2 - Scroll the window (1 for on, 0 for off). Default is 1.
+* arg3 - Accept a count before the command (1 for on, 0 for off). Default is 0.
+* arg4 - Length of delay between lines (in ms). Default is 5.
+* arg5 - Slowdown at the end of the movement (1 for on, 0 for off). Default is 1.
+* arg6 - Max number of lines before scrolling is skipped. Mainly just for big\
+  commands such as 'gg' and 'G'. Default is 300.
 
 ## Default Keymaps
 

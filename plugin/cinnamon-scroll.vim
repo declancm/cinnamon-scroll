@@ -35,7 +35,7 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
                     silent execute("normal! \<C-Y>")
                 endif
             endif
-            let l:remaining = -l:distance - l:counter
+            let l:remaining = - (l:distance + l:counter)
             call <SID>SleepDelay(l:remaining, a:delay, a:slowdown)
             let l:counter = <SID>CheckFoldCounter(l:counter)
         endwhile

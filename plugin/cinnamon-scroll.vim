@@ -69,12 +69,19 @@ function! s:MovementDistance(movement, useCount)
     " Calculate distance by subtracting the original position from the position
     " after performing the movement.
     let l:pos = getcurpos()[1]
+    let l:file = bufname("%")
     if a:useCount == 1
         silent execute("normal! " . v:count1 . a:movement)
     else
         silent execute("normal! " . a:movement)
     endif
     let l:newPos = getcurpos()[1]
+    let l:newFile = bufname("%")
+    " Check if the file has changed.
+    if l:file != l:newFile
+        let l:distance = 0
+        return
+    endif
     let l:distance = l:newPos - l:pos
     " Restore the window view.
     call winrestview(l:winview)
@@ -148,10 +155,10 @@ if !exists("g:cinnamon_extras")
 endif
 if g:cinnamon_extras == 1
     " start and end of file movements
-    nnoremap <silent> gg <Cmd>Cinnamon gg 0 0 1 <CR>
-    nnoremap <silent> G <Cmd>Cinnamon G 0 0 1 <CR>
-    xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 1 <CR>
-    xnoremap <silent> G <Cmd>Cinnamon G 0 0 1 <CR>
+    nnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
+    nnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
+    xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
+    xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 
     " up and down movements
     nnoremap <silent> k <Cmd>Cinnamon k 0 1 2 0 <CR>

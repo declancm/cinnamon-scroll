@@ -68,10 +68,10 @@ let g:cinnamon_no_defaults = 1
 
 ```vim
 " Start and end of file movements
-nnoremap <silent> gg <Cmd>Cinnamon gg 0 0 1 <CR>
-nnoremap <silent> G <Cmd>Cinnamon G 0 0 1 <CR>
-xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 1 <CR>
-xnoremap <silent> G <Cmd>Cinnamon G 0 0 1 <CR>
+nnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
+nnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
+xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
+xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 
 " Up and down movements which accepts a count (eg. 69j to scroll down 69 lines)
 nnoremap <silent> k <Cmd>Cinnamon k 0 1 2 0 <CR>

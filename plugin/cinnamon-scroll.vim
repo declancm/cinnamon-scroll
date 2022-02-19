@@ -1,6 +1,14 @@
 " FUNCTIONS:
 
 function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowdown = '1', maxLines = '300') abort
+    " Don't waste time performing the whole function if only moving one line.
+    if a:movement == 'j' && v:count1 == 1
+        silent execute("normal! j")
+        return
+    if a:movement == 'k' && v:count1 == 1
+        silent execute("normal! k")
+        return
+    endif
     let l:pos = getcurpos()[1]
     let l:distance = <SID>MovementDistance(a:movement, a:useCount)
     if l:distance == 0 | return | endif

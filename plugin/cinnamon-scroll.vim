@@ -4,6 +4,14 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
     let l:pos = getcurpos()[1]
     let l:distance = <SID>MovementDistance(a:movement, a:useCount)
     if l:distance == 0 | return | endif
+    if l:distance >= 1000
+        if a:useCount == 1
+            silent execute("normal! " . v:count1 . a:movement)
+        else
+            silent execute("normal! " . a:movement)
+        endif
+        return
+    endif
     let l:counter = 1
     if distance > 0
         " scrolling downwards
@@ -114,7 +122,7 @@ if g:cinnamon_no_defaults != 1
     inoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> <CR>
 endif
 
-if !exists("g:cinnamon_extra_defaults")
+if !exists("g:cinnamon_extras")
     let g:cinnamon_extras = 0
 endif
 if g:cinnamon_extras == 1

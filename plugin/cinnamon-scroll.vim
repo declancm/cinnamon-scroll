@@ -98,7 +98,7 @@ function! s:MovementDistance(movement, useCount)
     let l:distance = l:newPos - l:pos
     " Restore the window view.
     call winrestview(l:winview)
-    if l:newColumn != -1 | silent execute("call setcursorcharpos(" . line(".") . ", " . l:newColumn")") | endif
+    if l:newColumn != -1 | call setcursorcharpos(line("."), l:newColumn) | endif
     return l:distance
 endfunction
 

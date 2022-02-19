@@ -77,6 +77,7 @@ function! s:MovementDistance(movement, useCount)
     " Calculate distance by subtracting the original position from the position
     " after performing the movement.
     let l:pos = getcurpos()[1]
+    let l:column = getcurpos()[2]
     let l:file = bufname("%")
     if a:useCount == 1
         silent execute("normal! " . v:count1 . a:movement)
@@ -84,15 +85,20 @@ function! s:MovementDistance(movement, useCount)
         silent execute("normal! " . a:movement)
     endif
     let l:newPos = getcurpos()[1]
+    let l:newColumn = getcurpos()[2]
     let l:newFile = bufname("%")
     " Check if the file has changed.
     if l:file != l:newFile
         let l:distance = 0
         return
     endif
+    if l:column == l:newColumn || l:newColumn == strwidth(getline(".")) - 1
+        l:newColumn = -1
+    endif
     let l:distance = l:newPos - l:pos
     " Restore the window view.
     call winrestview(l:winview)
+    if l:newColumn != -1 | silent execute("call cursor(line(".")," . l:newColumn) | endif
     return l:distance
 endfunction
 
@@ -167,6 +173,10 @@ if g:cinnamon_extras == 1
     nnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
     xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
     xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
+
+    " previous and next cursor location movements
+    nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 0 <CR>
+    nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 0 <CR>
 
     " up and down movements
     nnoremap <silent> k <Cmd>Cinnamon k 0 1 2 0 <CR>

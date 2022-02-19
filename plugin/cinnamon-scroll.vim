@@ -92,10 +92,10 @@ function! s:MovementDistance(movement, useCount)
         let l:distance = 0
         return
     endif
-    if l:column == l:newColumn || l:newColumn == strdisplaywidth(getline("."))
+    let l:distance = l:newPos - l:pos
+    if l:column == l:newColumn || l:newColumn == strdisplaywidth(getline(".")) && l:distance != 0
         let l:newColumn = -1
     endif
-    let l:distance = l:newPos - l:pos
     " Restore the window view.
     call winrestview(l:winview)
     if l:newColumn != -1 | call setcursorcharpos(line("."), l:newColumn) | endif

@@ -4,6 +4,7 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
     let l:pos = getcurpos()[1]
     let l:distance = <SID>MovementDistance(a:movement, a:useCount)
     if l:distance == 0 | return | endif
+    " If scrolling distance is too great, just perform the movement without scroll.
     if l:distance > a:maxLines || l:distance < -a:maxLines
         if a:useCount == 1
             silent execute("normal! " . v:count1 . a:movement)
@@ -14,11 +15,14 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
     endif
     let l:counter = 1
     if distance > 0
-        " scrolling downwards
+        " Scrolling downwards.
         while l:counter <= l:distance
+            " Check if a fold exists at current line.
             let l:counter = <SID>CheckFold(l:counter)
+            " Move down by one line.
             silent execute("normal! j")
             if a:scrollWin == 1
+                " Scroll the window if the current line is not within the scrolloff borders.
                 if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%') - &scrolloff)
                     silent execute("normal! \<C-E>")
                 endif
@@ -28,11 +32,14 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
             call <SID>SleepDelay(l:remaining, a:delay, a:slowdown)
         endwhile
     else
-        " scrolling upwards
+        " Scrolling upwards.
         while l:counter <= -l:distance
+            " Check if a fold exists at current line.
             let l:counter = <SID>CheckFold(l:counter)
+            " Move up by one line.
             silent execute("normal! k")
             if a:scrollWin == 1
+                " Scroll the window if the current line is not within the scrolloff borders.
                 if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%') - &scrolloff)
                     silent execute("normal! \<C-Y>")
                 endif
@@ -49,15 +56,18 @@ function! s:CheckFold(counter)
     let l:foldStart = foldclosed(".")
     " If a fold exists, add the length to the counter.
     if l:foldStart != -1
+        " Calculate the fold size.
         let l:foldSize = foldclosedend(l:foldStart) - l:foldStart
         let l:counter += l:foldSize
     endif
-    echom l:counter
     return l:counter
 endfunction
 
 function! s:MovementDistance(movement, useCount)
+    " Create a backup for the current window view.
     let l:winview = winsaveview()
+    " Calculate distance by subtracting the original position from the position
+    " after performing the movement.
     let l:pos = getcurpos()[1]
     if a:useCount == 1
         silent execute("normal! " . v:count1 . a:movement)
@@ -66,27 +76,28 @@ function! s:MovementDistance(movement, useCount)
     endif
     let l:newPos = getcurpos()[1]
     let l:distance = l:newPos - l:pos
+    " Restore the window view.
     call winrestview(l:winview)
     return l:distance
 endfunction
 
 function! s:SleepDelay(remaining, delay, slowdown)
+    redraw
     if a:slowdown == 1
-        " Don't create a delay when the distance has been achieved.
+        " Don't create a delay when scrolling completed.
         if a:remaining <= 0
             redraw
             return
         endif
         " Increase the delay near the end of the scroll.
-        if a:remaining <= 5
-            silent execute("sleep " . (a:delay * (6 - a:remaining)) . "m")
+        if a:remaining <= 4
+            silent execute("sleep " . (a:delay * (5 - a:remaining)) . "m")
         else
             silent execute("sleep " . a:delay . "m")
         endif
     else
         silent execute("sleep " . a:delay . "m")
     endif
-    redraw
 endfunction
 
 " COMMAND:

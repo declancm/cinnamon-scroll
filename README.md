@@ -2,8 +2,10 @@
 
 A scrolling plugin for vim that works with any vertical movement command.
 
-It is highly customizable, works with any vertical movement and even supports
-scrolling over folds.
+It is highly customizable, supports using '.' (single repeat) as it doesn't break\
+or replace your last performed command, and even supports scrolling over folds.
+
+Fun bonus: supports tpope's vim-repeat if that's your jam.
 
 ## Installation
 

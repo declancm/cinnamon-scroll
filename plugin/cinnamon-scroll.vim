@@ -93,7 +93,7 @@ function! s:MovementDistance(movement, useCount)
         return
     endif
     let l:distance = l:newPos - l:pos
-    if l:column <= l:newColumn || l:newColumn == strdisplaywidth(getline(".")) && l:distance != 0
+    if l:column <= l:newColumn || l:newColumn == strdisplaywidth(getline(".")) && l:distance != 0 && l:newColumn <= l:column
         let l:newColumn = -1
     endif
     " Restore the window view.

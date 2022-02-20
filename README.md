@@ -11,12 +11,12 @@ Install with your favorite package manager. No configuration is required to get\
 started with the default keymaps.
 
 Install 'tpope/vim-repeat' to use the '.' command to repeat scroll movements.\
-I highly recommend but it is optional.
+Totally optional though :D.
 
 ### Vim-Plug
 
 ```vim
-Plug "tpope/vim-repeat" " optional but is OP
+Plug "tpope/vim-repeat" " optional
 Plug "declancm/cinnamon-scroll"
 ```
 

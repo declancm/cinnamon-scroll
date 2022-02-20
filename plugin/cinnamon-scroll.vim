@@ -1,3 +1,9 @@
+" Make sure the plugin is only loaded once.
+if exists("g:loaded_cinnamon")
+    finish
+endif
+let g:loaded_cinnamon = 1
+
 " FUNCTIONS:
 
 function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowdown = '1', maxLines = '300') abort
@@ -10,29 +16,40 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
         return
     endif
     " Save the last used arguments in a variable for vim-repeat.
-    let g:cinnamonArgs = '"'.a:movement.'","'.a:scrollWin.'","'.a:useCount.'","'.a:delay.'","'.a:slowdown.'","'.a:maxLines.'"'
-    let g:cinnamonCount = v:count1
+    if !exists("g:cinnamon_repeat") | let g:cinnamon_repeat = 1 | endif
+    if g:cinnamon_repeat == 1
+        let b:cinnamonArgs = '"'.a:movement.'","'.a:scrollWin.'","'.a:useCount.'","'.a:delay.'","'.a:slowdown.'","'.a:maxLines.'"'
+        let b:cinnamonCount = v:count1
+    endif
     " Get the scroll distance and the column position.
     let measurments = <SID>MovementDistance(a:movement, a:useCount)
     let l:distance = measurments[0]
     let l:newColumn = measurments[1]
     if l:distance == 0
-        " vim-repeat
-        if a:useCount == 1
-            silent! call repeat#set("\<Plug>CinnamonRepeat",g:cinnamonCount)
-        else
-            silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
+        " Set vim-repeat.
+        if g:cinnamon_repeat == 1
+            if a:useCount == 1
+                silent! call repeat#set("\<Plug>CinnamonRepeat",b:cinnamonCount)
+            else
+                silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
+            endif
+            return
         endif
-        return
     endif
     " If scrolling distance is too great, just perform the movement without scroll.
     if l:distance > a:maxLines || l:distance < -a:maxLines
         if a:useCount == 1
             silent execute("normal! " . v:count1 . a:movement)
-            silent! call repeat#set("\<Plug>CinnamonRepeat",g:cinnamonCount)
+            " Set vim-repeat.
+            if g:cinnamon_repeat == 1
+                silent! call repeat#set("\<Plug>CinnamonRepeat",b:cinnamonCount)
+            endif
         else
             silent execute("normal! " . a:movement)
-            silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
+            " Set vim-repeat.
+            if g:cinnamon_repeat == 1
+                silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
+            endif
         endif
         return
     endif
@@ -74,11 +91,13 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
     endif
     " Change the cursor column position.
     if l:newColumn != -1 | call cursor(line("."), l:newColumn) | endif
-    " vim-repeat
-    if a:useCount == 1
-        silent! call repeat#set("\<Plug>CinnamonRepeat",g:cinnamonCount)
-    else
-        silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
+    " Set vim-repeat.
+    if g:cinnamon_repeat == 1
+        if a:useCount == 1
+            silent! call repeat#set("\<Plug>CinnamonRepeat",b:cinnamonCount)
+        else
+            silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
+        endif
     endif
 endfunction
 
@@ -164,7 +183,7 @@ command! -nargs=+ Cinnamon call <SID>Scroll(<f-args>)
 " KEYMAPS:
 
 " Keymap for vim-repeat
-nnoremap <silent> <Plug>CinnamonRepeat <Cmd>silent execute("call <SID>Scroll(" . g:cinnamonArgs . ")")<CR>
+nnoremap <silent> <Plug>CinnamonRepeat <Cmd>silent execute("call <SID>Scroll(" . b:cinnamonArgs . ")")<CR>
 
 " Initializing defualt keymaps.
 if !exists("g:cinnamon_no_defaults")

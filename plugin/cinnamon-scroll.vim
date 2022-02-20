@@ -77,7 +77,8 @@ function! s:MovementDistance(movement, useCount)
     " Calculate distance by subtracting the original position from the position
     " after performing the movement.
     let l:pos = getcurpos()[1]
-    let l:column = getcursorcharpos()[2]
+    " let l:column = getcursorcharpos()[2]
+    let l:column = getcurpos()[2]
     let l:file = bufname("%")
     if a:useCount == 1
         silent execute("normal! " . v:count1 . a:movement)
@@ -85,7 +86,8 @@ function! s:MovementDistance(movement, useCount)
         silent execute("normal! " . a:movement)
     endif
     let l:newPos = getcurpos()[1]
-    let l:newColumn = getcursorcharpos()[2]
+    " let l:newColumn = getcursorcharpos()[2]
+    let l:newColumn = getcurpos()[2]
     let l:newFile = bufname("%")
     " Check if the file has changed.
     if l:file != l:newFile

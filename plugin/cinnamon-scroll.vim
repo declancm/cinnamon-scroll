@@ -10,7 +10,9 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
         return
     endif
     let l:pos = getcurpos()[1]
-    let l:distance = <SID>MovementDistance(a:movement, a:useCount)
+    let measurments = <SID>MovementDistance(a:movement, a:useCount)
+    let l:distance = measurments[0]
+    let l:newColumn = measurments[1]
     if l:distance == 0 | return | endif
     " If scrolling distance is too great, just perform the movement without scroll.
     if l:distance > a:maxLines || l:distance < -a:maxLines
@@ -57,6 +59,8 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
             call <SID>SleepDelay(l:remaining, a:delay, a:slowdown)
         endwhile
     endif
+    " Change the cursor column position.
+    if l:newColumn != -1 | call cursor(line("."), l:newColumn) | endif
 endfunction
 
 function! s:CheckFold(counter)
@@ -76,32 +80,33 @@ function! s:MovementDistance(movement, useCount)
     let l:winview = winsaveview()
     " Calculate distance by subtracting the original position from the position
     " after performing the movement.
-    let l:pos = getcurpos()[1]
-    " let l:column = getcursorcharpos()[2]
-    let l:column = getcurpos()[2]
+    let l:row = getcurpos()[1]
+    let l:curswant = getcurpos()[4]
     let l:file = bufname("%")
     if a:useCount == 1
         silent execute("normal! " . v:count1 . a:movement)
     else
         silent execute("normal! " . a:movement)
     endif
-    let l:newPos = getcurpos()[1]
-    " let l:newColumn = getcursorcharpos()[2]
-    let l:newColumn = getcurpos()[2]
+    let l:newRow = getcurpos()[1]
     let l:newFile = bufname("%")
     " Check if the file has changed.
     if l:file != l:newFile
         let l:distance = 0
         return
     endif
-    let l:distance = l:newPos - l:pos
-    if l:column <= l:newColumn || l:newColumn == strdisplaywidth(getline(".")) && l:distance != 0 && l:newColumn <= l:column
+    let l:distance = l:newRow - l:row
+    " Get the column position if 'curswant' has changed.
+    if l:curswant == getcurpos()[4]
         let l:newColumn = -1
+    else
+        let l:newColumn = getcurpos()[2]
     endif
     " Restore the window view.
     call winrestview(l:winview)
-    if l:newColumn != -1 | call setcursorcharpos(line("."), l:newColumn) | endif
-    return l:distance
+    " Return a list of the values.
+    let measurements = [l:distance,l:newColumn]
+    return measurements
 endfunction
 
 function! s:SleepDelay(remaining, delay, slowdown)

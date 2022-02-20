@@ -9,17 +9,30 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
         silent execute("normal! k")
         return
     endif
-    let l:pos = getcurpos()[1]
+    " Save the last used arguments in a variable for vim-repeat.
+    let g:cinnamonArgs = '"'.a:movement.'","'.a:scrollWin.'","'.a:useCount.'","'.a:delay.'","'.a:slowdown.'","'.a:maxLines.'"'
+    echom g:cinnamonArgs
+    " Get the scroll distance and the column position.
     let measurments = <SID>MovementDistance(a:movement, a:useCount)
     let l:distance = measurments[0]
     let l:newColumn = measurments[1]
-    if l:distance == 0 | return | endif
+    if l:distance == 0
+        " vim-repeat
+        if a:useCount == 1
+            silent! call repeat#set("\<Plug>CinnamonRepeat",1)
+        else
+            silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
+        endif
+        return
+    endif
     " If scrolling distance is too great, just perform the movement without scroll.
     if l:distance > a:maxLines || l:distance < -a:maxLines
         if a:useCount == 1
             silent execute("normal! " . v:count1 . a:movement)
+            silent! call repeat#set("\<Plug>CinnamonRepeat",1)
         else
             silent execute("normal! " . a:movement)
+            silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
         endif
         return
     endif
@@ -61,6 +74,12 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
     endif
     " Change the cursor column position.
     if l:newColumn != -1 | call cursor(line("."), l:newColumn) | endif
+    " vim-repeat
+    if a:useCount == 1
+        silent! call repeat#set("\<Plug>CinnamonRepeat",1)
+    else
+        silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
+    endif
 endfunction
 
 function! s:CheckFold(counter)
@@ -144,23 +163,27 @@ command! -nargs=+ Cinnamon call <SID>Scroll(<f-args>)
 
 " KEYMAPS:
 
+" Keymap for vim-repeat
+nnoremap <silent> <Plug>CinnamonRepeat <Cmd>silent execute("call <SID>Scroll(" . g:cinnamonArgs . ")")<CR>
+
+" Initializing defualt keymaps.
 if !exists("g:cinnamon_no_defaults")
     let g:cinnamon_no_defaults = 0
 endif
 if g:cinnamon_no_defaults != 1
-    " paragraph movements
+    " Paragraph movements.
     nnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
     nnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
     xnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
     xnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
 
-    " half-window movements
+    " Half-window movements.
     nnoremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
     nnoremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
     inoremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
     inoremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
 
-    " page movements
+    " Page movements.
     nnoremap <silent> <C-b> <Cmd>Cinnamon <C-b> <CR>
     nnoremap <silent> <C-f> <Cmd>Cinnamon <C-f> <CR>
     inoremap <silent> <C-b> <Cmd>Cinnamon <C-b> <CR>
@@ -171,21 +194,22 @@ if g:cinnamon_no_defaults != 1
     inoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> <CR>
 endif
 
+" Initializing extra keymaps.
 if !exists("g:cinnamon_extras")
     let g:cinnamon_extras = 0
 endif
 if g:cinnamon_extras == 1
-    " start and end of file movements
+    " Start and end of file movements.
     nnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
     nnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
     xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
     xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 
-    " previous and next cursor location movements
+    " Previous and next cursor location movements.
     nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 0 <CR>
     nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 0 <CR>
 
-    " up and down movements
+    " Up and down movements which accepts a count (eg. 69j to scroll down 69 lines).
     nnoremap <silent> k <Cmd>Cinnamon k 0 1 2 0 <CR>
     nnoremap <silent> j <Cmd>Cinnamon j 0 1 2 0 <CR>
     nnoremap <silent> <Up> <Cmd>Cinnamon k 0 1 2 0 <CR>

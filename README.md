@@ -7,11 +7,16 @@ scrolling over folds.
 
 ## Installation
 
-Install with your favorite package manager.
+Install with your favorite package manager. No configuration is required to get\
+started with the default keymaps.
+
+Install 'tpope/vim-repeat' to use the '.' command to repeat scroll movements.\
+I highly recommend but it is optional.
 
 ### Vim-Plug
 
 ```vim
+Plug "tpope/vim-repeat" " optional but is OP
 Plug "declancm/cinnamon-scroll"
 ```
 
@@ -35,19 +40,19 @@ _Note: A whitespace is used to separate the arguments._
 ## Default Keymaps
 
 ```vim
-" Paragraph movements
+" Paragraph movements.
 nnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
 nnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
 xnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
 xnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
 
-" Half-window movements
+" Half-window movements.
 nnoremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
 nnoremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
 inoremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
 inoremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
 
-" Page movements
+" Page movements.
 nnoremap <silent> <C-b> <Cmd>Cinnamon <C-b> <CR>
 nnoremap <silent> <C-f> <Cmd>Cinnamon <C-f> <CR>
 inoremap <silent> <C-b> <Cmd>Cinnamon <C-b> <CR>
@@ -67,17 +72,17 @@ let g:cinnamon_no_defaults = 1
 ## Extra Keymaps
 
 ```vim
-" Start and end of file movements
+" Start and end of file movements.
 nnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
 nnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
 xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 
-" previous/next cursor position
+" Previous/next cursor position.
 nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 0 0 3 <CR>
 nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 0 0 3 <CR>
 
-" Up and down movements which accepts a count (eg. 69j to scroll down 69 lines)
+" Up and down movements which accepts a count (eg. 69j to scroll down 69 lines).
 nnoremap <silent> k <Cmd>Cinnamon k 0 1 2 0 <CR>
 nnoremap <silent> j <Cmd>Cinnamon j 0 1 2 0 <CR>
 nnoremap <silent> <Up> <Cmd>Cinnamon k 0 1 2 0 <CR>

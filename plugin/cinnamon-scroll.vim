@@ -28,28 +28,20 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
     if l:distance == 0
         " Set vim-repeat.
         if g:cinnamon_repeat == 1
-            if a:useCount == 1
-                silent! call repeat#set("\<Plug>CinnamonRepeat",b:cinnamonCount)
-            else
-                silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
-            endif
-            return
+            silent! call repeat#set("\<Plug>CinnamonRepeat",b:cinnamonCount)
         endif
+        return
     endif
     " If scrolling distance is too great, just perform the movement without scroll.
     if l:distance > a:maxLines || l:distance < -a:maxLines
         if a:useCount == 1
             silent execute("normal! " . v:count1 . a:movement)
-            " Set vim-repeat.
-            if g:cinnamon_repeat == 1
-                silent! call repeat#set("\<Plug>CinnamonRepeat",b:cinnamonCount)
-            endif
         else
             silent execute("normal! " . a:movement)
-            " Set vim-repeat.
-            if g:cinnamon_repeat == 1
-                silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
-            endif
+        endif
+        " Set vim-repeat.
+        if g:cinnamon_repeat == 1
+            silent! call repeat#set("\<Plug>CinnamonRepeat",b:cinnamonCount)
         endif
         return
     endif
@@ -93,11 +85,7 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
     if l:newColumn != -1 | call cursor(line("."), l:newColumn) | endif
     " Set vim-repeat.
     if g:cinnamon_repeat == 1
-        if a:useCount == 1
-            silent! call repeat#set("\<Plug>CinnamonRepeat",b:cinnamonCount)
-        else
-            silent! call repeat#set("\<Plug>CinnamonRepeat",-1)
-        endif
+        silent! call repeat#set("\<Plug>CinnamonRepeat",b:cinnamonCount)
     endif
 endfunction
 

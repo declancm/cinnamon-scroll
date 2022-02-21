@@ -55,14 +55,14 @@ inoremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
 inoremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
 
 " Page movements.
-nnoremap <silent> <C-b> <Cmd>Cinnamon <C-b> <CR>
-nnoremap <silent> <C-f> <Cmd>Cinnamon <C-f> <CR>
-inoremap <silent> <C-b> <Cmd>Cinnamon <C-b> <CR>
-inoremap <silent> <C-f> <Cmd>Cinnamon <C-f> <CR>
-nnoremap <silent> <PageUp> <Cmd>Cinnamon <C-b> <CR>
-nnoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> <CR>
-inoremap <silent> <PageUp> <Cmd>Cinnamon <C-b> <CR>
-inoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> <CR>
+nnoremap <silent> <C-b> <Cmd>Cinnamon <C-b> 1 1 <CR>
+nnoremap <silent> <C-f> <Cmd>Cinnamon <C-f> 1 1 <CR>
+inoremap <silent> <C-b> <Cmd>Cinnamon <C-b> 1 1 <CR>
+inoremap <silent> <C-f> <Cmd>Cinnamon <C-f> 1 1 <CR>
+nnoremap <silent> <PageUp> <Cmd>Cinnamon <C-b> 1 1 <CR>
+nnoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> 1 1 <CR>
+inoremap <silent> <PageUp> <Cmd>Cinnamon <C-b> 1 1 <CR>
+inoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> 1 1 <CR>
 ```
 
 To **disable** the default keymaps, add the following to your .vimrc:

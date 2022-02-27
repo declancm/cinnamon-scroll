@@ -51,6 +51,8 @@ xnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
 " Half-window movements.
 noremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
 noremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
+inoremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
+inoremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
 
 " Page movements.
 nnoremap <silent> <C-b> <Cmd>Cinnamon <C-b> 1 1 <CR>

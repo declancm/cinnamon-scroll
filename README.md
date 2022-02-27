@@ -32,7 +32,7 @@ _Note: A whitespace is used to separate the arguments._
 
 * arg1 = The movement command (eg. 'gg'). This argument is required as there's\
   no default value.
-* arg2 = Scroll the window (1 for on, 0 for off). Default is 1.
+* arg2 = Keep cursor centered in the window. (1 for on, 0 for off). Default is 1.
 * arg3 = Accept a count before the command (1 for on, 0 for off). Default is 0.
 * arg4 = Length of delay between lines (in ms). Default is 5.
 * arg5 = Slowdown at the end of the movement (1 for on, 0 for off). Default is 1.

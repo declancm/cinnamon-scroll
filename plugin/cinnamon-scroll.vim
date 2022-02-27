@@ -185,20 +185,14 @@ if g:cinnamon_no_defaults != 1
     xnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
 
     " Half-window movements.
-    nnoremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
-    nnoremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
-    inoremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
-    inoremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
+    noremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
+    noremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
 
     " Page movements.
     nnoremap <silent> <C-b> <Cmd>Cinnamon <C-b> 1 1 <CR>
     nnoremap <silent> <C-f> <Cmd>Cinnamon <C-f> 1 1 <CR>
-    inoremap <silent> <C-b> <Cmd>Cinnamon <C-b> 1 1 <CR>
-    inoremap <silent> <C-f> <Cmd>Cinnamon <C-f> 1 1 <CR>
     nnoremap <silent> <PageUp> <Cmd>Cinnamon <C-b> 1 1 <CR>
     nnoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> 1 1 <CR>
-    inoremap <silent> <PageUp> <Cmd>Cinnamon <C-b> 1 1 <CR>
-    inoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> 1 1 <CR>
 endif
 
 " Initializing extra keymaps.

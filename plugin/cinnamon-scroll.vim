@@ -6,19 +6,18 @@ let g:loaded_cinnamon = 1
 
 " FUNCTIONS:
 
-function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowdown = '1', maxLines = '300') abort
+function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5',
+            \ slowdown = '1', maxLines = '300') abort
     " Don't waste time performing the whole function if only moving one line.
-    if a:movement == 'j' && v:count1 == 1
-        silent execute("normal! j")
-        return
-    elseif a:movement == 'k' && v:count1 == 1
-        silent execute("normal! k")
+    if (a:movement == 'k' || a:movement == 'j') && v:count1 == 1
+        silent exec "norm! " . a:movement
         return
     endif
     " Save the last used arguments in a variable for vim-repeat.
     if !exists("g:cinnamon_repeat") | let g:cinnamon_repeat = 1 | endif
     if g:cinnamon_repeat == 1
-        let b:cinnamonArgs = '"'.a:movement.'","'.a:scrollWin.'","'.a:useCount.'","'.a:delay.'","'.a:slowdown.'","'.a:maxLines.'"'
+        let b:cinnamonArgs = '"'.a:movement.'","'.a:scrollWin.'","'.a:useCount
+                    \.'","'.a:delay.'","'.a:slowdown.'","'.a:maxLines.'"'
         let b:cinnamonCount = v:count1
     endif
     " Get the scroll distance and the column position.
@@ -32,12 +31,12 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
         endif
         return
     endif
-    " If scrolling distance is too great, just perform the movement without scroll.
+    " If the distance is too long, perform the movement without the scroll.
     if l:distance > a:maxLines || l:distance < -a:maxLines
         if a:useCount == 1
-            silent execute("normal! " . v:count1 . a:movement)
+            silent exec "norm! " . v:count1 . a:movement
         else
-            silent execute("normal! " . a:movement)
+            silent exec "norm! " . a:movement
         endif
         " Set vim-repeat.
         if g:cinnamon_repeat == 1
@@ -52,11 +51,13 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
             " Check if a fold exists at current line.
             let l:counter = <SID>CheckFold(l:counter)
             " Move down by one line.
-            silent execute("normal! j")
+            silent exec "norm! j"
             if a:scrollWin == 1
-                " Scroll the window if the current line is not within the scrolloff borders.
-                if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%') - &scrolloff)
-                    silent execute("normal! \<C-E>")
+                " Scroll the window if the current line is not within the
+                " scrolloff borders.
+                if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%')
+                            \ - &scrolloff)
+                    silent exec "norm! \<C-E>"
                 endif
             endif
             let l:counter += 1
@@ -69,11 +70,13 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5', slowd
             " Check if a fold exists at current line.
             let l:counter = <SID>CheckFold(l:counter)
             " Move up by one line.
-            silent execute("normal! k")
+            silent exec "norm! k"
             if a:scrollWin == 1
-                " Scroll the window if the current line is not within the scrolloff borders.
-                if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%') - &scrolloff)
-                    silent execute("normal! \<C-Y>")
+                " Scroll the window if the current line is not within the
+                " scrolloff borders.
+                if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%')
+                            \ - &scrolloff)
+                    silent exec "norm! \<C-Y>"
                 endif
             endif
             let l:counter += 1
@@ -110,9 +113,9 @@ function! s:MovementDistance(movement, useCount)
     let l:curswant = getcurpos()[4]
     let l:file = bufname("%")
     if a:useCount == 1
-        silent execute("normal! " . v:count1 . a:movement)
+        silent exec "norm! " . v:count1 . a:movement
     else
-        silent execute("normal! " . a:movement)
+        silent exec "norm! " . a:movement
     endif
     let l:newRow = getcurpos()[1]
     let l:newFile = bufname("%")
@@ -145,12 +148,12 @@ function! s:SleepDelay(remaining, delay, slowdown)
         endif
         " Increase the delay near the end of the scroll.
         if a:remaining <= 4
-            silent execute("sleep " . (a:delay * (5 - a:remaining)) . "m")
+            silent exec "sleep " . (a:delay * (5 - a:remaining)) . "m"
         else
-            silent execute("sleep " . a:delay . "m")
+            silent exec "sleep " . a:delay . "m"
         endif
     else
-        silent execute("sleep " . a:delay . "m")
+        silent exec "sleep " . a:delay . "m"
     endif
 endfunction
 
@@ -158,7 +161,8 @@ endfunction
 
 " <Cmd>Cinnamon arg1 arg2 arg3 arg4 arg5 arg6 <CR>
 
-" arg1 = Movement command (eg. 'gg'). This argument is required as there's no default value.
+" arg1 = Movement command (eg. 'gg'). This argument is required as there's no
+"        default value.
 " arg2 = Keep cursor centered in the window. (1 for on, 0 for off). Default is 1.
 " arg3 = Accept a count before the command (1 for on, 0 for off). Default is 0.
 " arg4 = Length of delay (in ms). Default is 5.
@@ -171,7 +175,8 @@ command! -nargs=+ Cinnamon call <SID>Scroll(<f-args>)
 " KEYMAPS:
 
 " Keymap for vim-repeat
-nnoremap <silent> <Plug>CinnamonRepeat <Cmd>silent execute("call <SID>Scroll(" . b:cinnamonArgs . ")")<CR>
+nnoremap <silent> <Plug>CinnamonRepeat
+            \ <Cmd>silent exec "call <SID>Scroll(" . b:cinnamonArgs . ")"<CR>
 
 " Initializing defualt keymaps.
 if !exists("g:cinnamon_no_defaults")
@@ -212,7 +217,8 @@ if g:cinnamon_extras == 1
     nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 0 <CR>
     nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 0 <CR>
 
-    " Up and down movements which accepts a count (eg. 69j to scroll down 69 lines).
+    " Up and down movements which accepts a count (eg. 69j to scroll down 69
+    " lines).
     nnoremap <silent> k <Cmd>Cinnamon k 0 1 2 0 <CR>
     nnoremap <silent> j <Cmd>Cinnamon j 0 1 2 0 <CR>
     nnoremap <silent> <Up> <Cmd>Cinnamon k 0 1 2 0 <CR>

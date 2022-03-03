@@ -7,7 +7,7 @@ let g:loaded_cinnamon = 1
 " FUNCTIONS:
 
 function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5',
-            \ slowdown = '1', maxLines = '300') abort
+            \ slowdown = '1', maxLines = '150') abort
     " Don't waste time performing the whole function if only moving one line.
     if (a:movement == 'k' || a:movement == 'j') && v:count1 == 1
         silent exec "norm! " . a:movement
@@ -168,7 +168,7 @@ endfunction
 " arg4 = Length of delay (in ms). Default is 5.
 " arg5 = Slowdown at the end of the movement (1 for on, 0 for off). Default is 1.
 " arg6 = Max number of lines before scrolling is skipped. Mainly just for big
-"        commands such as 'gg' and 'G'. Default is 300.
+"        commands such as 'gg' and 'G'. Default is 150.
 
 command! -nargs=+ Cinnamon call <SID>Scroll(<f-args>)
 

@@ -37,7 +37,7 @@ _Note: A whitespace is used to separate the arguments._
 * arg4 = Length of delay between lines (in ms). Default is 5.
 * arg5 = Slowdown at the end of the movement (1 for on, 0 for off). Default is 1.
 * arg6 = Max number of lines before scrolling is skipped. Mainly just for big\
-  commands such as 'gg' and 'G'. Default is 300.
+  commands such as 'gg' and 'G'. Default is 150.
 
 ## Default Keymaps
 

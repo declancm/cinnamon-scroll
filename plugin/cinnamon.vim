@@ -198,7 +198,7 @@ function! s:CenterScreen(scrollWin, delay)
         let l:prevLine = winline()
         while winline() > l:halfHeight
             silent exec "norm! \<C-E>"
-            call <SID>SleepDelay(winline() - halfHeight, a:delay, a:scrollWin)
+            call <SID>SleepDelay(winline() - l:halfHeight, a:delay, a:scrollWin)
             let l:newLine = winline()
             if l:newLine == l:prevLine
                 " The screen isn't able to move so break.
@@ -208,7 +208,7 @@ function! s:CenterScreen(scrollWin, delay)
         endwhile
         while winline() < l:halfHeight
             silent exec "norm! \<C-Y>"
-            call <SID>SleepDelay(halfHeight - winline(), a:delay, a:scrollWin)
+            call <SID>SleepDelay(l:halfHeight - winline(), a:delay, a:scrollWin)
             let l:newLine = winline()
             if l:newLine == l:prevLine
                 " The screen isn't able to move so break.
@@ -240,7 +240,7 @@ command! -nargs=+ Cinnamon call <SID>Scroll(<f-args>)
 nnoremap <silent> <Plug>CinnamonRepeat
             \ <Cmd>silent exec "call <SID>Scroll(" . b:cinnamonArgs . ")"<CR>
 
-" Center the screen with window scroll.
+" Setting the center window variable.
 if !exists("g:cinnamon_centered")
     let g:cinnamon_centered = 1
 endif

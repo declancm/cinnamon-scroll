@@ -1,6 +1,6 @@
-# cinnamon-scroll
+# Cinnamon Scroll
 
-A scrolling plugin for vim that works with any vertical movement command.
+Smooth scrolling for any vertical movement command.
 
 It is highly customizable, supports using '.' (single repeat) as it doesn't break\
 or replace your last performed command, and even supports scrolling over folds.
@@ -79,6 +79,12 @@ xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 " Previous/next cursor position.
 nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 0 0 3 <CR>
 nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 0 0 3 <CR>
+
+" Previous/next search result.
+nnoremap <silent> n <Cmd>Cinnamon n 0 0 3 <CR>
+nnoremap <silent> N <Cmd>Cinnamon N 0 0 3 <CR>
+nnoremap <silent> * <Cmd>Cinnamon * 0 0 3 <CR>
+nnoremap <silent> # <Cmd>Cinnamon # 0 0 3 <CR>
 
 " Up and down movements which accepts a count (eg. 69j to scroll down 69 lines).
 nnoremap <silent> k <Cmd>Cinnamon k 0 1 2 0 <CR>

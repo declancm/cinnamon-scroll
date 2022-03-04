@@ -25,6 +25,7 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5',
     let l:distance = measurments[0]
     let l:newColumn = measurments[1]
     if l:distance == 0
+        if l:newColumn != -1 | call cursor(line("."), l:newColumn) | endif
         " Set vim-repeat.
         if g:cinnamon_repeat == 1
             silent! call repeat#set("\<Plug>CinnamonRepeat",b:cinnamonCount)
@@ -213,9 +214,15 @@ if g:cinnamon_extras == 1
     xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
     xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 
-    " Previous and next cursor location movements.
+    " Previous/next cursor location movements.
     nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 0 <CR>
     nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 0 <CR>
+
+    " Previous/next search result.
+    nnoremap <silent> n <Cmd>Cinnamon n 0 0 3 <CR>
+    nnoremap <silent> N <Cmd>Cinnamon N 0 0 3 <CR>
+    nnoremap <silent> * <Cmd>Cinnamon * 0 0 3 <CR>
+    nnoremap <silent> # <Cmd>Cinnamon # 0 0 3 <CR>
 
     " Up and down movements which accepts a count (eg. 69j to scroll down 69
     " lines).

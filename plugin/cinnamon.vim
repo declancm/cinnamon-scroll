@@ -40,7 +40,7 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5',
     endif
     " If the distance is too long, perform the movement without the scroll.
     if l:distance > a:maxLines || l:distance < -a:maxLines
-        if a:useCount == 1
+        if a:useCount == 1 && v:count1 > 1
             silent exec "norm! " . v:count1 . a:movement
         else
             silent exec "norm! " . a:movement
@@ -134,7 +134,7 @@ function! s:MovementDistance(movement, useCount)
     let l:row = getcurpos()[1]
     let l:curswant = getcurpos()[4]
     let l:file = bufname("%")
-    if a:useCount == 1
+    if a:useCount == 1 && v:count1 > 1
         silent exec "norm! " . v:count1 . a:movement
     else
         silent exec "norm! " . a:movement
@@ -284,4 +284,6 @@ if g:cinnamon_extras == 1
     xnoremap <silent> j <Cmd>Cinnamon j 0 1 2 0 <CR>
     xnoremap <silent> <Up> <Cmd>Cinnamon k 0 1 2 0 <CR>
     xnoremap <silent> <Down> <Cmd>Cinnamon j 0 1 2 0 <CR>
+
+    " TODO: add support for [count]G?
 endif

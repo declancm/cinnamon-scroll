@@ -19,7 +19,7 @@ Totally optional though :D.
 
 ```vim
 Plug "tpope/vim-repeat" " optional
-Plug "declancm/cinnamon-scroll"
+Plug "declancm/vim-cinnamon"
 ```
 
 ## The Command

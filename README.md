@@ -1,6 +1,6 @@
 # Cinnamon Scroll
 
-Smooth scrolling for any vertical movement command.
+__Smooth scrolling (for any movement command :O) in vim.__
 
 It is highly customizable, supports using '.' (single repeat) as it doesn't break\
 or replace your last performed command, and even supports scrolling over folds.
@@ -121,10 +121,6 @@ Custom keymaps can be created using the 'Cinnamon' command.
 " Disable default keymaps
 let g:cinnamon_no_defaults = 1
 " Jump to first/last line of paragraph intead of the whitespace
-xnoremap <silent> { k<Cmd>Cinnamon {j 0 <CR>
-xnoremap <silent> } j<Cmd>Cinnamon }k 0 <CR>
+nnoremap <silent> n <Cmd>Cinnamon n 1 0 3 <CR>zv
+nnoremap <silent> N <Cmd>Cinnamon N 1 0 3 <CR>zv
 ```
-
-The first argument for the '{' keymap will perform a movement of '{j' which will\
-jump to the first whitespace line and then move one line down. The next argument\
-disables the window scrolling as the default is on.

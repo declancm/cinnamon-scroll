@@ -24,7 +24,13 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5',
     let measurments = <SID>MovementDistance(a:movement, a:useCount)
     let l:distance = measurments[0]
     let l:newColumn = measurments[1]
+    " If there is no vertical movement, return.
     if l:distance == 0
+        " center the screen if it's not centered.
+        if a:scrollWin == 1 && exists("g:cinnamon_centered") && g:cinnamon_centered == 1
+            normal! zz
+        endif
+        " Change the cursor column position if required.
         if l:newColumn != -1 | call cursor(line("."), l:newColumn) | endif
         " Set vim-repeat.
         if g:cinnamon_repeat == 1
@@ -45,79 +51,17 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5',
         endif
         return
     endif
-    let l:counter = 1
-    let l:halfHeight = (winheight(0) % 2) ? ((winheight(0) + 1)/2) : (winheight(0)/2)
-    if distance > 0
-        " Scrolling downwards.
-        while l:counter <= l:distance
-            " Check if a fold exists at current line.
-            let l:counter = <SID>CheckFold(l:counter)
-            " Move down by one line.
-            silent exec "norm! j"
-            if a:scrollWin == 1
-                if exists("g:cinnamon_centered") && g:cinnamon_centered == 1
-                    " Stay at the centre of the screen.
-                    if winline() > l:halfHeight
-                        silent exec "norm! \<C-E>"
-                    endif
-                else
-                    " Scroll the window if the current line is not within the
-                    " scrolloff borders.
-                    if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%')
-                                \ - &scrolloff)
-                        silent exec "norm! \<C-E>"
-                    endif
-                endif
-            endif
-            let l:counter += 1
-            let l:remaining = l:distance - l:counter
-            call <SID>SleepDelay(l:remaining, a:delay, a:slowdown)
-        endwhile
-        if a:scrollWin == 1 && exists("g:cinnamon_centered") && g:cinnamon_centered == 1
-            let l:prevLine = winline()
-            while winline() < l:halfHeight
-                silent exec "norm! \<C-Y>"
-                call <SID>SleepDelay(999, a:delay, 0)
-                let l:newLine = winline()
-                if l:newLine == l:prevLine
-                    " The screen isn't able to move so break.
-                    break
-                endif
-                let l:prevLine = l:newLine
-            endwhile
-        endif
+    " Perform the scroll.
+    if l:distance > 0
+        call <SID>ScrollDown(l:distance, a:delay, a:scrollWin, a:slowdown)
     else
-        " Scrolling upwards.
-        while l:counter <= -l:distance
-            " Check if a fold exists at current line.
-            let l:counter = <SID>CheckFold(l:counter)
-            " Move up by one line.
-            silent exec "norm! k"
-            if a:scrollWin == 1
-                if exists("g:cinnamon_centered") && g:cinnamon_centered == 1
-                    " Stay at the centre of the screen.
-                    if winline() < l:halfHeight
-                        silent exec "norm! \<C-Y>"
-                    endif
-                else
-                    " Scroll the window if the current line is not within the
-                    " scrolloff borders.
-                    if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%')
-                                \ - &scrolloff)
-                        silent exec "norm! \<C-Y>"
-                    endif
-                endif
-            endif
-            let l:counter += 1
-            let l:remaining = - (l:distance + l:counter)
-            call <SID>SleepDelay(l:remaining, a:delay, a:slowdown)
-        endwhile
+        call <SID>ScrollUp(l:distance, a:delay, a:scrollWin, a:slowdown)
     endif
-    " Center the screen if it's not centered.
+    " center the screen if it's not centered.
     if a:scrollWin == 1 && exists("g:cinnamon_centered") && g:cinnamon_centered == 1
-        call <SID>CenterScreen(a:scrollWin, a:delay)
+        call <sid>CenterScreen(a:scrollWin, a:delay)
     endif
-    " Change the cursor column position.
+    " Change the cursor column position if required.
     if l:newColumn != -1 | call cursor(line("."), l:newColumn) | endif
     " Set vim-repeat.
     if g:cinnamon_repeat == 1
@@ -125,12 +69,57 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5',
     endif
 endfunction
 
+function! s:ScrollDown(distance, delay, scrollWin, slowdown)
+    let l:halfHeight = (winheight(0) % 2) ? ((winheight(0) + 1)/2) : (winheight(0)/2)
+    let l:counter = 1
+    while l:counter <= a:distance
+        let l:counter = <SID>CheckFold(l:counter)
+        silent exec "norm! j"
+        if a:scrollWin == 1
+            if exists("g:cinnamon_centered") && g:cinnamon_centered == 1
+                " Stay at the centre of the screen.
+                if winline() > l:halfHeight | silent exec "norm! \<C-E>" | endif
+            else
+                " Scroll the window if the current line is not within the
+                " scrolloff borders.
+                if ! (winline() <= &so + 1 || winline() >= winheight('%') - &so)
+                    silent exec "norm! \<C-E>"
+                endif
+            endif
+        endif
+        let l:counter += 1
+        call <SID>SleepDelay(a:distance - l:counter, a:delay, a:slowdown)
+    endwhile
+endfunction
+
+function! s:ScrollUp(distance, delay, scrollWin, slowdown)
+    let l:halfHeight = (winheight(0) % 2) ? ((winheight(0) + 1)/2) : (winheight(0)/2)
+    let l:counter = 1
+    while l:counter <= -a:distance
+        let l:counter = <SID>CheckFold(l:counter)
+        silent exec "norm! k"
+        if a:scrollWin == 1
+            if exists("g:cinnamon_centered") && g:cinnamon_centered == 1
+                " Stay at the centre of the screen.
+                if winline() < l:halfHeight | silent exec "norm! \<C-Y>" | endif
+            else
+                " Scroll the window if the current line is not within the
+                " scrolloff borders.
+                if ! (winline() <= &so + 1 || winline() >= winheight('%') - &so)
+                    silent exec "norm! \<C-Y>"
+                endif
+            endif
+        endif
+        let l:counter += 1
+        call <SID>SleepDelay(-(a:distance + l:counter), a:delay, a:slowdown)
+    endwhile
+endfunction
+
 function! s:CheckFold(counter)
     let l:counter = a:counter
     let l:foldStart = foldclosed(".")
     " If a fold exists, add the length to the counter.
     if l:foldStart != -1
-        " Calculate the fold size.
         let l:foldSize = foldclosedend(l:foldStart) - l:foldStart
         let l:counter += l:foldSize
     endif
@@ -160,7 +149,7 @@ function! s:MovementDistance(movement, useCount)
         return
     endif
     let l:distance = l:newRow - l:row
-    " Get the column position if 'curswant' has changed.
+    " Get the new column position if 'curswant' has changed.
     if l:curswant == getcurpos()[4]
         let l:newColumn = -1
     else
@@ -168,7 +157,6 @@ function! s:MovementDistance(movement, useCount)
     endif
     " Restore the window view.
     call winrestview(l:winview)
-    " Return a list of the values.
     let measurements = [l:distance,l:newColumn]
     return measurements
 endfunction
@@ -198,22 +186,18 @@ function! s:CenterScreen(scrollWin, delay)
         let l:prevLine = winline()
         while winline() > l:halfHeight
             silent exec "norm! \<C-E>"
-            call <SID>SleepDelay(winline() - l:halfHeight, a:delay, a:scrollWin)
             let l:newLine = winline()
-            if l:newLine == l:prevLine
-                " The screen isn't able to move so break.
-                break
-            endif
+            call <SID>SleepDelay(l:newLine - l:halfHeight, a:delay, a:scrollWin)
+            " If line isn't changing, break the endless loop.
+            if l:newLine == l:prevLine | break | endif
             let l:prevLine = l:newLine
         endwhile
         while winline() < l:halfHeight
             silent exec "norm! \<C-Y>"
-            call <SID>SleepDelay(l:halfHeight - winline(), a:delay, a:scrollWin)
             let l:newLine = winline()
-            if l:newLine == l:prevLine
-                " The screen isn't able to move so break.
-                break
-            endif
+            call <SID>SleepDelay(l:halfHeight - l:newLine, a:delay, a:scrollWin)
+            " If line isn't changing, break the endless loop.
+            if l:newLine == l:prevLine | break | endif
             let l:prevLine = l:newLine
         endwhile
     endif

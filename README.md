@@ -32,12 +32,22 @@ _Note: A whitespace is used to separate the arguments._
 
 * arg1 = The movement command (eg. 'gg'). This argument is required as there's\
   no default value.
-* arg2 = Keep cursor centered in the window. (1 for on, 0 for off). Default is 1.
+* arg2 = Scroll the window with the cursor. (1 for on, 0 for off). Default is 1.
 * arg3 = Accept a count before the command (1 for on, 0 for off). Default is 0.
 * arg4 = Length of delay between lines (in ms). Default is 5.
 * arg5 = Slowdown at the end of the movement (1 for on, 0 for off). Default is 1.
 * arg6 = Max number of lines before scrolling is skipped. Mainly just for big\
   commands such as 'gg' and 'G'. Default is 150.
+
+For keymaps which scroll the window, the cursor line can either stay at the same\
+or stay in the center of the window with the following variable:
+
+```vim
+" Keep cursor line centered in screen (the default).
+let g:cinnnamon_centered = 1
+" Keep cursor line in the same relative position.
+let g:cinnnamon_centered = 0
+```
 
 ## Default Keymaps
 
@@ -77,14 +87,14 @@ xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
 xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 
 " Previous/next cursor position.
-nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 0 0 3 <CR>
-nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 0 0 3 <CR>
+nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 1 0 3 <CR>
+nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 1 0 3 <CR>
 
 " Previous/next search result.
-nnoremap <silent> n <Cmd>Cinnamon n 0 0 3 <CR>
-nnoremap <silent> N <Cmd>Cinnamon N 0 0 3 <CR>
-nnoremap <silent> * <Cmd>Cinnamon * 0 0 3 <CR>
-nnoremap <silent> # <Cmd>Cinnamon # 0 0 3 <CR>
+nnoremap <silent> n <Cmd>Cinnamon n 1 0 3 <CR>
+nnoremap <silent> N <Cmd>Cinnamon N 1 0 3 <CR>
+nnoremap <silent> * <Cmd>Cinnamon * 1 0 3 <CR>
+nnoremap <silent> # <Cmd>Cinnamon # 1 0 3 <CR>
 
 " Up and down movements which accepts a count (eg. 69j to scroll down 69 lines).
 nnoremap <silent> k <Cmd>Cinnamon k 0 1 2 0 <CR>

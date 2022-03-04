@@ -46,6 +46,7 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5',
         return
     endif
     let l:counter = 1
+    let l:halfHeight = (winheight(0) % 2) ? ((winheight(0) + 1)/2) : (winheight(0)/2)
     if distance > 0
         " Scrolling downwards.
         while l:counter <= l:distance
@@ -54,17 +55,37 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5',
             " Move down by one line.
             silent exec "norm! j"
             if a:scrollWin == 1
-                " Scroll the window if the current line is not within the
-                " scrolloff borders.
-                if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%')
-                            \ - &scrolloff)
-                    silent exec "norm! \<C-E>"
+                if exists("g:cinnamon_centered") && g:cinnamon_centered == 1
+                    " Stay at the centre of the screen.
+                    if winline() > l:halfHeight
+                        silent exec "norm! \<C-E>"
+                    endif
+                else
+                    " Scroll the window if the current line is not within the
+                    " scrolloff borders.
+                    if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%')
+                                \ - &scrolloff)
+                        silent exec "norm! \<C-E>"
+                    endif
                 endif
             endif
             let l:counter += 1
             let l:remaining = l:distance - l:counter
             call <SID>SleepDelay(l:remaining, a:delay, a:slowdown)
         endwhile
+        if a:scrollWin == 1 && exists("g:cinnamon_centered") && g:cinnamon_centered == 1
+            let l:prevLine = winline()
+            while winline() < l:halfHeight
+                silent exec "norm! \<C-Y>"
+                call <SID>SleepDelay(999, a:delay, 0)
+                let l:newLine = winline()
+                if l:newLine == l:prevLine
+                    " The screen isn't able to move so break.
+                    break
+                endif
+                let l:prevLine = l:newLine
+            endwhile
+        endif
     else
         " Scrolling upwards.
         while l:counter <= -l:distance
@@ -73,17 +94,28 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5',
             " Move up by one line.
             silent exec "norm! k"
             if a:scrollWin == 1
-                " Scroll the window if the current line is not within the
-                " scrolloff borders.
-                if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%')
-                            \ - &scrolloff)
-                    silent exec "norm! \<C-Y>"
+                if exists("g:cinnamon_centered") && g:cinnamon_centered == 1
+                    " Stay at the centre of the screen.
+                    if winline() < l:halfHeight
+                        silent exec "norm! \<C-Y>"
+                    endif
+                else
+                    " Scroll the window if the current line is not within the
+                    " scrolloff borders.
+                    if ! (winline() <= &scrolloff + 1 || winline() >= winheight('%')
+                                \ - &scrolloff)
+                        silent exec "norm! \<C-Y>"
+                    endif
                 endif
             endif
             let l:counter += 1
             let l:remaining = - (l:distance + l:counter)
             call <SID>SleepDelay(l:remaining, a:delay, a:slowdown)
         endwhile
+    endif
+    " Center the screen if it's not centered.
+    if a:scrollWin == 1 && exists("g:cinnamon_centered") && g:cinnamon_centered == 1
+        call <SID>CenterScreen(a:scrollWin, a:delay)
     endif
     " Change the cursor column position.
     if l:newColumn != -1 | call cursor(line("."), l:newColumn) | endif
@@ -122,6 +154,8 @@ function! s:MovementDistance(movement, useCount)
     let l:newFile = bufname("%")
     " Check if the file has changed.
     if l:file != l:newFile
+        " Center the screen.
+        normal! zz
         let l:distance = 0
         return
     endif
@@ -158,6 +192,33 @@ function! s:SleepDelay(remaining, delay, slowdown)
     endif
 endfunction
 
+function! s:CenterScreen(scrollWin, delay)
+    let l:halfHeight = (winheight(0) % 2) ? ((winheight(0) + 1)/2) : (winheight(0)/2)
+    if exists("g:cinnamon_centered") && g:cinnamon_centered == 1
+        let l:prevLine = winline()
+        while winline() > l:halfHeight
+            silent exec "norm! \<C-E>"
+            call <SID>SleepDelay(winline() - halfHeight, a:delay, a:scrollWin)
+            let l:newLine = winline()
+            if l:newLine == l:prevLine
+                " The screen isn't able to move so break.
+                break
+            endif
+            let l:prevLine = l:newLine
+        endwhile
+        while winline() < l:halfHeight
+            silent exec "norm! \<C-Y>"
+            call <SID>SleepDelay(halfHeight - winline(), a:delay, a:scrollWin)
+            let l:newLine = winline()
+            if l:newLine == l:prevLine
+                " The screen isn't able to move so break.
+                break
+            endif
+            let l:prevLine = l:newLine
+        endwhile
+    endif
+endfunction
+
 " COMMAND:
 
 " <Cmd>Cinnamon arg1 arg2 arg3 arg4 arg5 arg6 <CR>
@@ -178,6 +239,11 @@ command! -nargs=+ Cinnamon call <SID>Scroll(<f-args>)
 " Keymap for vim-repeat
 nnoremap <silent> <Plug>CinnamonRepeat
             \ <Cmd>silent exec "call <SID>Scroll(" . b:cinnamonArgs . ")"<CR>
+
+" Center the screen with window scroll.
+if !exists("g:cinnamon_centered")
+    let g:cinnamon_centered = 1
+endif
 
 " Initializing defualt keymaps.
 if !exists("g:cinnamon_no_defaults")
@@ -215,14 +281,14 @@ if g:cinnamon_extras == 1
     xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 
     " Previous/next cursor location movements.
-    nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 0 <CR>
-    nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 0 <CR>
+    nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 1 0 3 <CR>
+    nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 1 0 3 <CR>
 
     " Previous/next search result.
-    nnoremap <silent> n <Cmd>Cinnamon n 0 0 3 <CR>
-    nnoremap <silent> N <Cmd>Cinnamon N 0 0 3 <CR>
-    nnoremap <silent> * <Cmd>Cinnamon * 0 0 3 <CR>
-    nnoremap <silent> # <Cmd>Cinnamon # 0 0 3 <CR>
+    nnoremap <silent> n <Cmd>Cinnamon n 1 0 3 <CR>
+    nnoremap <silent> N <Cmd>Cinnamon N 1 0 3 <CR>
+    nnoremap <silent> * <Cmd>Cinnamon * 1 0 3 <CR>
+    nnoremap <silent> # <Cmd>Cinnamon # 1 0 3 <CR>
 
     " Up and down movements which accepts a count (eg. 69j to scroll down 69
     " lines).

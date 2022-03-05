@@ -234,12 +234,6 @@ if !exists("g:cinnamon_no_defaults")
     let g:cinnamon_no_defaults = 0
 endif
 if g:cinnamon_no_defaults != 1
-    " Paragraph movements.
-    nnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
-    nnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
-    xnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
-    xnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
-
     " Half-window movements.
     noremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
     noremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
@@ -251,6 +245,16 @@ if g:cinnamon_no_defaults != 1
     nnoremap <silent> <C-f> <Cmd>Cinnamon <C-f> 1 1 <CR>
     nnoremap <silent> <PageUp> <Cmd>Cinnamon <C-b> 1 1 <CR>
     nnoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> 1 1 <CR>
+
+    " Paragraph movements.
+    nnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
+    nnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
+    xnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
+    xnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
+
+    " Previous/next cursor location movements.
+    nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 1 0 3 <CR>
+    nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 1 0 3 <CR>
 endif
 
 " Initializing extra keymaps.
@@ -263,10 +267,6 @@ if g:cinnamon_extras == 1
     nnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
     xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
     xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
-
-    " Previous/next cursor location movements.
-    nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 1 0 3 <CR>
-    nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 1 0 3 <CR>
 
     " Previous/next search result.
     nnoremap <silent> n <Cmd>Cinnamon n 1 0 3 <CR>
@@ -284,6 +284,4 @@ if g:cinnamon_extras == 1
     xnoremap <silent> j <Cmd>Cinnamon j 0 1 2 0 <CR>
     xnoremap <silent> <Up> <Cmd>Cinnamon k 0 1 2 0 <CR>
     xnoremap <silent> <Down> <Cmd>Cinnamon j 0 1 2 0 <CR>
-
-    " TODO: add support for [count]G?
 endif

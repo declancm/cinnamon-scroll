@@ -52,12 +52,6 @@ let g:cinnnamon_centered = 0
 ## Default Keymaps
 
 ```vim
-" Paragraph movements.
-nnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
-nnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
-xnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
-xnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
-
 " Half-window movements.
 noremap <silent> <C-u> <Cmd>Cinnamon <C-u> <CR>
 noremap <silent> <C-d> <Cmd>Cinnamon <C-d> <CR>
@@ -69,6 +63,16 @@ nnoremap <silent> <C-b> <Cmd>Cinnamon <C-b> 1 1 <CR>
 nnoremap <silent> <C-f> <Cmd>Cinnamon <C-f> 1 1 <CR>
 nnoremap <silent> <PageUp> <Cmd>Cinnamon <C-b> 1 1 <CR>
 nnoremap <silent> <PageDown> <Cmd>Cinnamon <C-f> 1 1 <CR>
+
+" Paragraph movements.
+nnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
+nnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
+xnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
+xnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
+
+" Previous/next cursor position.
+nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 1 0 3 <CR>
+nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 1 0 3 <CR>
 ```
 
 To **disable** the default keymaps, add the following to your .vimrc:
@@ -85,10 +89,6 @@ nnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
 nnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
 xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
 xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
-
-" Previous/next cursor position.
-nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 1 0 3 <CR>
-nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 1 0 3 <CR>
 
 " Previous/next search result.
 nnoremap <silent> n <Cmd>Cinnamon n 1 0 3 <CR>
@@ -120,7 +120,10 @@ Custom keymaps can be created using the 'Cinnamon' command.
 ```vim
 " Disable default keymaps
 let g:cinnamon_no_defaults = 1
-" Jump to first/last line of paragraph intead of the whitespace
-nnoremap <silent> n <Cmd>Cinnamon n 1 0 3 <CR>zv
-nnoremap <silent> N <Cmd>Cinnamon N 1 0 3 <CR>zv
+
+" Half page scroll without scrolling the window.
+noremap <silent> <C-u> <Cmd>Cinnamon <C-u> 0 <CR>
+noremap <silent> <C-d> <Cmd>Cinnamon <C-d> 0 <CR>
+inoremap <silent> <C-u> <Cmd>Cinnamon <C-u> 0 <CR>
+inoremap <silent> <C-d> <Cmd>Cinnamon <C-d> 0 <CR>
 ```

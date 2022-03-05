@@ -70,7 +70,7 @@ endfunction
 function! s:ScrollDown(distance, delay, scrollWin, slowdown)
     let l:halfHeight = (winheight(0) % 2) ? ((winheight(0) + 1)/2) : (winheight(0)/2)
     if winline() > l:halfHeight
-        call <sid>CenterScreen(a:scrollWin, a:delay, a:slowdown)
+        call <sid>CenterScreen(a:scrollWin, a:delay, 0)
     endif
     let l:counter = 1
     while l:counter <= a:distance
@@ -96,7 +96,7 @@ endfunction
 function! s:ScrollUp(distance, delay, scrollWin, slowdown)
     let l:halfHeight = (winheight(0) % 2) ? ((winheight(0) + 1)/2) : (winheight(0)/2)
     if winline() < l:halfHeight
-        call <sid>CenterScreen(a:scrollWin, a:delay, a:slowdown)
+        call <sid>CenterScreen(a:scrollWin, a:delay, 0)
     endif
     let l:counter = 1
     while l:counter <= -a:distance

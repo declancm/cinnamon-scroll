@@ -58,9 +58,7 @@ function! s:Scroll(movement, scrollWin = '1', useCount = '0', delay = '5',
         call <SID>ScrollUp(l:distance, a:delay, a:scrollWin, a:slowdown)
     endif
     " center the screen if it's not centered.
-    if a:scrollWin == 1 && exists("g:cinnamon_centered") && g:cinnamon_centered == 1
-        call <sid>CenterScreen(a:scrollWin, a:delay)
-    endif
+    call <sid>CenterScreen(a:scrollWin, a:delay, a:slowdown)
     " Change the cursor column position if required.
     if l:newColumn != -1 | call cursor(line("."), l:newColumn) | endif
     " Set vim-repeat.
@@ -71,6 +69,9 @@ endfunction
 
 function! s:ScrollDown(distance, delay, scrollWin, slowdown)
     let l:halfHeight = (winheight(0) % 2) ? ((winheight(0) + 1)/2) : (winheight(0)/2)
+    if winline() > l:halfHeight
+        call <sid>CenterScreen(a:scrollWin, a:delay, a:slowdown)
+    endif
     let l:counter = 1
     while l:counter <= a:distance
         let l:counter = <SID>CheckFold(l:counter)
@@ -94,6 +95,9 @@ endfunction
 
 function! s:ScrollUp(distance, delay, scrollWin, slowdown)
     let l:halfHeight = (winheight(0) % 2) ? ((winheight(0) + 1)/2) : (winheight(0)/2)
+    if winline() < l:halfHeight
+        call <sid>CenterScreen(a:scrollWin, a:delay, a:slowdown)
+    endif
     let l:counter = 1
     while l:counter <= -a:distance
         let l:counter = <SID>CheckFold(l:counter)
@@ -180,14 +184,14 @@ function! s:SleepDelay(remaining, delay, slowdown)
     endif
 endfunction
 
-function! s:CenterScreen(scrollWin, delay)
+function! s:CenterScreen(scrollWin, delay, slowdown)
     let l:halfHeight = (winheight(0) % 2) ? ((winheight(0) + 1)/2) : (winheight(0)/2)
-    if exists("g:cinnamon_centered") && g:cinnamon_centered == 1
+    if a:scrollWin == 1 && exists("g:cinnamon_centered") && g:cinnamon_centered == 1
         let l:prevLine = winline()
         while winline() > l:halfHeight
             silent exec "norm! \<C-E>"
             let l:newLine = winline()
-            call <SID>SleepDelay(l:newLine - l:halfHeight, a:delay, a:scrollWin)
+            call <SID>SleepDelay(l:newLine - l:halfHeight, a:delay, a:slowdown)
             " If line isn't changing, break the endless loop.
             if l:newLine == l:prevLine | break | endif
             let l:prevLine = l:newLine
@@ -195,7 +199,7 @@ function! s:CenterScreen(scrollWin, delay)
         while winline() < l:halfHeight
             silent exec "norm! \<C-Y>"
             let l:newLine = winline()
-            call <SID>SleepDelay(l:halfHeight - l:newLine, a:delay, a:scrollWin)
+            call <SID>SleepDelay(l:halfHeight - l:newLine, a:delay, a:slowdown)
             " If line isn't changing, break the endless loop.
             if l:newLine == l:prevLine | break | endif
             let l:prevLine = l:newLine

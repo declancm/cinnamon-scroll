@@ -70,9 +70,8 @@ nnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
 xnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
 xnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
 
-" Previous/next cursor position.
+" Previous cursor location.
 nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 1 0 3 <CR>
-nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 1 0 3 <CR>
 ```
 
 To **disable** the default keymaps, add the following to your .vimrc:

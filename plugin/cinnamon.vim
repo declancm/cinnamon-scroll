@@ -191,7 +191,8 @@ function! s:CenterScreen(remaining, scrollWin, delay, slowdown)
         while winline() > l:halfHeight
             silent exec "norm! \<C-E>"
             let l:newLine = winline()
-            call <SID>SleepDelay(l:newLine - l:halfHeight + a:remaining, a:delay, a:slowdown)
+            call <SID>SleepDelay(l:newLine - l:halfHeight + a:remaining, a:delay,
+                        \ a:slowdown)
             " If line isn't changing, break the endless loop.
             if l:newLine == l:prevLine | break | endif
             let l:prevLine = l:newLine
@@ -199,7 +200,8 @@ function! s:CenterScreen(remaining, scrollWin, delay, slowdown)
         while winline() < l:halfHeight
             silent exec "norm! \<C-Y>"
             let l:newLine = winline()
-            call <SID>SleepDelay(l:halfHeight - l:newLine + a:remaining, a:delay, a:slowdown)
+            call <SID>SleepDelay(l:halfHeight - l:newLine + a:remaining, a:delay,
+                        \ a:slowdown)
             " If line isn't changing, break the endless loop.
             if l:newLine == l:prevLine | break | endif
             let l:prevLine = l:newLine
@@ -256,9 +258,15 @@ if g:cinnamon_no_defaults != 1
     xnoremap <silent> { <Cmd>Cinnamon { 0 <CR>
     xnoremap <silent> } <Cmd>Cinnamon } 0 <CR>
 
-    " Previous/next cursor location movements.
+    " Previous/next search result.
+    nnoremap <silent> n <Cmd>Cinnamon n 1 0 3 <CR>
+    nnoremap <silent> N <Cmd>Cinnamon N 1 0 3 <CR>
+    nnoremap <silent> * <Cmd>Cinnamon * 1 0 3 <CR>
+    nnoremap <silent> # <Cmd>Cinnamon # 1 0 3 <CR>
+
+    " Previous cursor location.
     nnoremap <silent> <C-o> <Cmd>Cinnamon <C-o> 1 0 3 <CR>
-    nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 1 0 3 <CR>
+    " nnoremap <silent> <C-i> <Cmd>Cinnamon <C-i> 1 0 3 <CR>
 endif
 
 " Initializing extra keymaps.
@@ -271,12 +279,6 @@ if g:cinnamon_extras == 1
     nnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
     xnoremap <silent> gg <Cmd>Cinnamon gg 0 0 3 <CR>
     xnoremap <silent> G <Cmd>Cinnamon G 0 0 3 <CR>
-
-    " Previous/next search result.
-    nnoremap <silent> n <Cmd>Cinnamon n 1 0 3 <CR>
-    nnoremap <silent> N <Cmd>Cinnamon N 1 0 3 <CR>
-    nnoremap <silent> * <Cmd>Cinnamon * 1 0 3 <CR>
-    nnoremap <silent> # <Cmd>Cinnamon # 1 0 3 <CR>
 
     " Up and down movements which accepts a count (eg. 69j to scroll down 69
     " lines).
